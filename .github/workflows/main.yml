@@ -3,8 +3,8 @@ name: Build and Release EXE
 on:
   push:
     tags:
-      - 'v*'  # 触发条件：推送以 v 开头的标签
-  workflow_dispatch:  # 允许手动触发
+      - 'v*'  # 仅在推送以 v 开头的标签时触发
+  workflow_dispatch:  # 允许手动触发工作流
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'  # 设置你使用的 Python 版本
+        python-version: '3.x'  # 设置 Python 版本
 
     - name: Install dependencies
       run: |
@@ -27,12 +27,12 @@ jobs:
 
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --onefile app.py  # 使用 PyInstaller 将 app.py 转换为 exe 文件
+        pyinstaller --onefile app.py  # 使用 PyInstaller 打包为 EXE 文件
 
     - name: Upload EXE to GitHub Releases
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          dist/app.exe  # 上传生成的 exe 文件
+          dist/app.exe  # 上传生成的 EXE 文件
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Token 上传到 Releases
